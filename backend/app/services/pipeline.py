@@ -26,12 +26,9 @@ _HANGUL_RE = re.compile(r"[가-힣]")
 # 중국어 한자 + 키릴 혼입 (실측: siren→汽笛, "다иск리트傅里叶變換" — temp=0 불량 모드에서
 # qwen2.5vl이 다국어 토큰을 섞음. 온도 상승으로 탈출)
 _FOREIGN_RE = re.compile(r"[一-鿿Ѐ-ӿ]")
-# 합쇼체 어미 — prompt.md 문체 규칙은 "~다/~한다"체 통일. 혼용되면 Figure별 설명 톤이
-# 오락가락한다. 어미의 일반형은 "받침 ㅂ인 음절 + 니다"(줍니다/됩니다/습니다/입니다 전부 포함).
-# 단순 "니다" 매칭은 평서형 "아니다"를 오탐하므로 받침을 정확히 본다.
-_POLITE_RE = re.compile(
-    "[" + "".join(chr(0xAC00 + 28 * i + 17) for i in range(399)) + "]니다"
-)
+_SENT_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
+_PAREN_RE = re.compile(r"\([^()]*\)")  # 괄호구는 어미 판정에서 제외 ("…됩니다 (512 샘플).")
+_TRAILING_NON_HANGUL_RE = re.compile(r"[^가-힣]+$")
 
 
 def _looks_korean(text: str) -> bool:
@@ -39,9 +36,26 @@ def _looks_korean(text: str) -> bool:
     return len(_HANGUL_RE.findall(text)) >= 10
 
 
+def _polite_korean(text: str) -> bool:
+    """모든 문장이 '~니다'(합쇼체)로 끝나는지 — Figure별 설명 톤 통일 게이트.
+
+    표준을 합쇼체로 정한 이유(2026-07-14 실측): qwen2.5vl:7b는 특정 Figure에서 '-다'체
+    지시를 3회 재시도 전부 무시할 만큼 합쇼체 성향이 강하다. 모델과 싸우면 재시도만
+    소모하므로 모델 성향에 맞춰 표준을 정했다 (UI 문구도 존댓말이라 톤이 맞는다)."""
+    total = 0
+    for seg in _SENT_SPLIT_RE.split(text):
+        seg = _TRAILING_NON_HANGUL_RE.sub("", _PAREN_RE.sub("", seg).strip())
+        if not seg:
+            continue
+        total += 1
+        if not seg.endswith("니다"):
+            return False
+    return total > 0
+
+
 def _clean_style(text: str) -> bool:
-    """설명 문체 게이트: 외국 문자(한자·키릴) 혼입 없음 + '~다'체 (prompt.md 문체 규칙)."""
-    return not _FOREIGN_RE.search(text) and not _POLITE_RE.search(text)
+    """설명 문체 게이트: 외국 문자(한자·키릴) 혼입 없음 + 합쇼체 통일 (prompt.md 문체 규칙)."""
+    return not _FOREIGN_RE.search(text) and _polite_korean(text)
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -274,7 +288,9 @@ def explain_stage_one(figure_id: uuid.UUID, db: Session) -> None:
                     figure.figure_number, attempt + 1, temperature,
                 )
                 continue
-            body = candidate.summary + candidate.detailed_explanation
+            # 공백으로 잇는다 — 붙여 쓰면 summary의 마지막 문장이 문장 분리에서 다음 문장과
+            # 합쳐져 어미 검사를 통과해버린다 (실측: 명사구 summary "…보여주는 그림."이 누락됨)
+            body = f"{candidate.summary} {candidate.detailed_explanation}"
             full = " ".join(
                 [body] + [c.label + c.role + c.plain_explanation for c in candidate.components]
             )

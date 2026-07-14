@@ -55,9 +55,14 @@ def _build_user_message(explain_input: ExplainInput) -> Message:
             lines.append(f"- (paragraph_id={m.paragraph_id}, {m.match_type}) {m.text}")
     else:
         lines.append("\n[매칭된 본문 근거 문단] 없음 — none_found로 처리할 것")
-    # 마지막 지시가 소형 모델에서 가장 잘 지켜진다 — 한국어·JSON 규칙을 끝에 한 번 더
-    # (2026-07-14: 3B 모델이 시스템 프롬프트의 한국어 규칙을 간헐적으로 무시하는 실측 대응)
-    lines.append("\n[지시] 설명(summary, detailed_explanation, role, plain_explanation)은 반드시 한국어로 작성한다. 유효한 JSON만 출력한다.")
+    # 마지막 지시가 소형 모델에서 가장 잘 지켜진다 — 한국어·문체·JSON 규칙을 끝에 한 번 더.
+    # 문체는 합쇼체(존댓말) 표준 (2026-07-14 실측: 7b가 특정 Figure에서 '-다'체 지시를
+    # 3회 재시도 모두 무시할 만큼 합쇼체 성향이 강함 — 모델 성향에 맞춰 표준을 정했다)
+    lines.append(
+        "\n[지시] 설명(summary, detailed_explanation, role, plain_explanation)은 반드시 한국어로 작성한다."
+        ' 모든 문장은 "~합니다/~입니다"(존댓말)로 끝낸다 ("~한다/~이다"체 금지).'
+        " 중국어 한자·키릴 문자를 쓰지 않는다. 유효한 JSON만 출력한다."
+    )
     parts = [
         TextPart(text="\n".join(lines)),
         ImagePart(data=explain_input.image_bytes, media_type=explain_input.image_media_type),
