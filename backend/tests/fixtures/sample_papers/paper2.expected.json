@@ -1,0 +1,20 @@
+{
+  "paper": "Deep Residual Learning for Image Recognition (arXiv:1512.03385, CVPR 2016, 2단 컬럼)",
+  "note": "헤딩이 온전한 한 라인으로 존재하므로 하위 섹션(3.x, 4.x)까지 포함한 골든 케이스.",
+  "note_min_paragraphs": "'3. Deep Residual Learning'과 '4. Experiments'의 min_paragraphs가 0인 이유: 실제 논문에서 이 부모 헤딩들 직후에 하위 섹션(3.1, 4.1)이 바로 시작되어 부모 섹션 직속 문단이 없다. 파서 결함이 아니라 논문의 실제 구조.",
+  "sections": [
+    {"title": "Abstract", "min_paragraphs": 1},
+    {"title": "1. Introduction", "min_paragraphs": 3},
+    {"title": "2. Related Work", "min_paragraphs": 2},
+    {"title": "3. Deep Residual Learning", "min_paragraphs": 0},
+    {"title": "3.1. Residual Learning", "min_paragraphs": 1},
+    {"title": "3.2. Identity Mapping by Shortcuts", "min_paragraphs": 1},
+    {"title": "3.3. Network Architectures", "min_paragraphs": 1},
+    {"title": "3.4. Implementation", "min_paragraphs": 1},
+    {"title": "4. Experiments", "min_paragraphs": 0},
+    {"title": "4.1. ImageNet Classification", "min_paragraphs": 2},
+    {"title": "4.2. CIFAR-10 and Analysis", "min_paragraphs": 2},
+    {"title": "4.3. Object Detection on PASCAL and MS COCO", "min_paragraphs": 1},
+    {"title": "References", "min_paragraphs": 1}
+  ]
+}

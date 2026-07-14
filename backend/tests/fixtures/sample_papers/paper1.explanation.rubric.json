@@ -1,0 +1,25 @@
+{
+  "paper": "Attention Is All You Need (arXiv:1706.03762v7)",
+  "note": "M4 Step 0 설명 평가 기준(rubric). M1~M3의 '정답 목록'과 다르다 — 설명은 정답이 하나가 아니므로 재현율 숫자로 채점하지 않는다. 이 파일은 LLM-as-judge 또는 사람이 '이 설명이 쓸만한가'를 확인하는 체크리스트다. must_mention은 좋은 설명이 반드시 다뤄야 할 핵심 요소, must_not_claim은 이 Figure만 보고 지어내면 안 되는 것, grounding_expectation은 M3 매칭 결과에 근거한 grounding.source 기대값이다. 명시 참조 수는 결정론적(M3 Step 2 실측)이라 안정적이다. must_mention은 2026-07-13 Step 0 검수 시 크롭 이미지 4개를 직접 재열람해 실제 이미지 내용과 대조 확인함(캡션·기억만으로 작성하지 않음).",
+  "observation_vs_citation": "★모든 Figure 공통 원칙 (Fig 3 none_found에서 특히 중요): '이미지를 직접 관찰해 서술하는 것'(예: '이 그림은 making이 more/difficult로 이어지는 attention을 보여준다')은 항상 허용된다. 금지되는 것은 (a) 본문에서 가져온 것처럼 인용하는 것('본문에서 설명하듯이', '논문에 따르면') — 실제 매칭된 근거 문단이 없는데 인용 형식을 쓰면 환각, (b) 이미지에 실제로 없는 세부를 지어내는 것. 즉 관찰 서술 ≠ 본문 인용. grounding.source는 관찰 기반이면 'none_found'(또는 'caption'), 매칭 문단 기반이면 'paragraph'로 정직하게 구분한다.",
+  "figures": [
+    {
+      "figure_number": "Figure 1",
+      "figure_type": "architecture",
+      "must_mention": ["encoder", "decoder", "multi-head attention", "feed-forward", "positional encoding", "residual connection / add & norm"],
+      "should_mention": ["input/output embedding", "softmax output(Linear→Softmax→Output Probabilities)", "stacked N layers(Nx)", "디코더의 masked multi-head attention(이미지에서 인코더의 multi-head와 구분됨)"],
+      "must_not_claim": ["구체적 BLEU 점수나 학습 시간(이 Figure가 아니라 표에 있음)을 이 그림에서 읽었다고 주장", "실험 결과를 보여주는 그림이라고 오해"],
+      "grounding_expectation": "명시 참조 1건 존재 → grounding이 비어 있지 않고 source='paragraph'인 GroundingRef를 최소 1개 포함해야 함",
+      "component_decomposition": "아키텍처형이므로 ExplanationComponent 분해가 유용 (예: Multi-Head Attention, Feed-Forward, Positional Encoding 각각의 역할)"
+    },
+    {
+      "figure_number": "Figure 3",
+      "figure_type": "qualitative",
+      "must_mention": ["attention / self-attention", "long-distance(long-range) dependency", "예시 단어 'making'", "여러 attention head (색으로 구분)"],
+      "should_mention": ["encoder self-attention", "layer 5 of 6"],
+      "must_not_claim": ["본문에서 가져온 것처럼 인용하는 것('본문에서 설명하듯이', '논문에 따르면') — 매칭된 근거 문단이 없으므로 인용 형식 자체가 환각이다 (허용: '이 그림은 ~을 보여준다' 식의 직접 관찰 서술)", "이미지에 실제로 없는 세부(예: 캡션에 없는 특정 layer의 동작, 없는 수치)를 지어냄", "특정 head가 무엇을 한다는 세부를 캡션·이미지 근거 없이 단정"],
+      "grounding_expectation": "★핵심 DoD 케이스: 명시 참조 0건 + 의미 매칭 후보에도 없음 → grounding.source='none_found'. explanation은 '이 Figure에 대한 직접적인 본문 설명을 찾지 못했다'를 명시하고, 캡션과 이미지 관찰에만 근거해 설명하되 지어낸 본문 인용을 붙이지 않아야 함. (관찰 서술은 허용, 본문 인용은 금지 — 위 observation_vs_citation 원칙)",
+      "component_decomposition": "정성적 예시이므로 컴포넌트 분해 불필요 — summary + detailed_explanation로 충분"
+    }
+  ]
+}

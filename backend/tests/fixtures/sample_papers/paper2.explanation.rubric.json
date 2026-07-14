@@ -1,0 +1,24 @@
+{
+  "paper": "Deep Residual Learning for Image Recognition (arXiv:1512.03385)",
+  "note": "M4 Step 0 설명 평가 기준(rubric). 형식·철학은 paper1.explanation.rubric.json과 동일하며, 그 파일의 observation_vs_citation 공통 원칙(관찰 서술 허용 / 본문 인용 형식 금지)이 여기에도 그대로 적용된다. 플롯형 1개(Fig 1)와 아키텍처/다이어그램형 1개(Fig 2)를 골랐다 — paper1의 아키텍처형(Fig 1)·정성형(Fig 3)과 합쳐 architecture 2 + plot 1 + qualitative 1로 M4.md가 요구한 타입 균형을 맞춘다. must_mention은 2026-07-13 Step 0 검수 시 크롭 이미지를 직접 재열람해 실제 내용과 대조 확인함.",
+  "figures": [
+    {
+      "figure_number": "Figure 1",
+      "figure_type": "plot",
+      "must_mention": ["training error / test error", "CIFAR-10", "20-layer vs 56-layer", "더 깊은 네트워크가 오히려 오차가 높다(degradation 문제)", "plain network(비-residual)"],
+      "should_mention": ["가로축 iteration, 세로축 error(%)", "왼쪽=training, 오른쪽=test"],
+      "must_not_claim": ["이 Figure가 residual/ResNet이 문제를 해결함을 보여준다고 주장(그건 Fig 4) — 이 그림은 문제를 '제시'하는 plain net 결과", "캡션에 없는 구체적 오차 수치를 지어냄"],
+      "grounding_expectation": "명시 참조 2건 존재 → grounding 비어 있지 않고 source='paragraph' 포함. 본문의 degradation 논의 문단과 연결되어야 자연스러움",
+      "component_decomposition": "플롯형이므로 컴포넌트 분해 불필요 — 축/경향/비교(20 vs 56층)가 핵심"
+    },
+    {
+      "figure_number": "Figure 2",
+      "figure_type": "architecture",
+      "must_mention": ["residual learning", "building block", "identity shortcut / skip connection", "F(x) + x (잔차 + 항등)", "weight layer(들)", "relu"],
+      "should_mention": ["shortcut connection이 파라미터를 늘리지 않음"],
+      "must_not_claim": ["구체적 layer 수나 성능 수치를 이 개념도에서 읽었다고 주장", "특정 데이터셋 결과를 이 그림이 보여준다고 오해"],
+      "grounding_expectation": "명시 참조 4건 존재 → grounding 비어 있지 않고 source='paragraph' 다수. 잔차 학습을 정의하는 본문 문단과 연결되어야 함",
+      "component_decomposition": "간단한 다이어그램이라 컴포넌트 분해는 선택적 — identity path와 residual path 두 갈래를 나눠 설명하면 유용"
+    }
+  ]
+}

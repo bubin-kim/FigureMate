@@ -1,0 +1,77 @@
+{
+  "paper": "Deep Residual Learning for Image Recognition (arXiv:1512.03385)",
+  "note": "2026-07-13 M3 Step 0에서 PDF 원문 블록 스캔(캡션 제외)으로 작성. 이 논문은 'Fig. N' 표기로 본문 참조가 풍부하다 (실측: F1 2건, F2 4건, F3 6건, F4 9건, F5 5건, F6 4건, F7 2건). min_explicit_matches는 파서가 인접 블록을 병합할 가능성을 감안한 보수적 하한. semantic_hints는 비워둠 — 명시 참조가 충분해서 의미 매칭 골든 채점은 paper1(부록 Figure)에 맡기는 것이 정직하다. 힌트 문자열은 리거처(ﬁ)·하이픈 결합 지점을 피하고, **파싱된 문단 텍스트에 실존하는 문자열**로 선택한다 (Step 2 실측: M1 파서가 2단 컬럼에서 하이픈 분리 단어가 컬럼 경계에 걸리면 문단 내 어순을 뒤섞는 한계가 있어, 원문 기준 힌트 3건을 파싱 코퍼스 기준으로 교체함 — M1.md 알려진 한계 #3).",
+  "semantic_scoring": "semantic_hints 없음 — 이 논문에서는 의미 매칭 채점을 하지 않는다 (paper1 담당).",
+  "figures": [
+    {
+      "figure_number": "Figure 1",
+      "min_explicit_matches": 2,
+      "explicit_paragraph_hints": [
+        "Fig. 1 shows a typical example",
+        "degradation problem (Fig. 1, left)"
+      ],
+      "semantic_hints": []
+    },
+    {
+      "figure_number": "Figure 2",
+      "min_explicit_matches": 3,
+      "explicit_paragraph_hints": [
+        "A building block is shown in Fig. 2",
+        "Shortcut connections [2, 34, 49] are those skipping one or more layers",
+        "For the example in Fig. 2"
+      ],
+      "semantic_hints": []
+    },
+    {
+      "figure_number": "Figure 3",
+      "min_explicit_matches": 4,
+      "explicit_paragraph_hints": [
+        "(Fig. 3, middle) are mainly inspired",
+        "insert shortcut connections (Fig. 3, right)",
+        "The 34-layer plain net is in Fig. 3 (middle)",
+        "follow the form in Fig. 3 (middle/right)"
+      ],
+      "semantic_hints": []
+    },
+    {
+      "figure_number": "Figure 4",
+      "min_explicit_matches": 4,
+      "explicit_paragraph_hints": [
+        "Fig. 4 shows the training procedures",
+        "observations from Table 2 and Fig. 4",
+        "converges faster (Fig. 4 right vs. left)",
+        "similar to that on ImageNet (Fig. 4, left)"
+      ],
+      "semantic_hints": []
+    },
+    {
+      "figure_number": "Figure 5",
+      "min_explicit_matches": 3,
+      "explicit_paragraph_hints": [
+        "three layers (Fig. 5), while more layers are possible",
+        "a stack of 3 layers instead of 2 (Fig. 5)",
+        "Fig. 5 (right) is replaced with projection"
+      ],
+      "semantic_hints": []
+    },
+    {
+      "figure_number": "Figure 6",
+      "min_explicit_matches": 3,
+      "explicit_paragraph_hints": [
+        "Fig. 6 (left) shows the behaviors",
+        "Fig. 6 (middle) shows the behaviors of ResNets",
+        "This 110-layer network converges well"
+      ],
+      "semantic_hints": []
+    },
+    {
+      "figure_number": "Figure 7",
+      "min_explicit_matches": 2,
+      "explicit_paragraph_hints": [
+        "We show by experiments (Fig. 7)",
+        "Fig. 7 shows the standard deviations"
+      ],
+      "semantic_hints": []
+    }
+  ]
+}

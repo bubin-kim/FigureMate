@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Env
+.env
+
+# Storage (로컬 업로드 파일)
+backend/storage/
+
+# Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# 샘플 논문 PDF는 저작권 이슈로 커밋하지 않는 것을 권장 (팀 정책에 따라 조정)
+backend/tests/fixtures/sample_papers/*.pdf
+
+# OS
+.DS_Store
+
+# 로컬 잔여물 (루트에만 해당 — backend/tests와 무관)
+/tmp/
+/tests/
+.Rhistory
